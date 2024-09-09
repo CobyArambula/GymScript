@@ -4,7 +4,7 @@ import { Colors } from "@/constants/Colors";
 import { extendedClient } from "@/myDbModule";
 import { WorkoutFile } from "@prisma/client/react-native";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SafeAreaView,
   TextInput,
@@ -12,6 +12,7 @@ import {
   StyleSheet,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import ExerciseList from "@/components/ExerciseList";
 
 export default function WorkoutFileScreen() {
   const theme = useColorScheme();
@@ -121,6 +122,7 @@ export default function WorkoutFileScreen() {
             setDate(date!);
           }}
         />
+        <ExerciseList viewingFile={viewingFile} />
       </SafeAreaView>
     </ThemedView>
   );
