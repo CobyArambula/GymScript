@@ -1,0 +1,28 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["reactNative"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./app.db"
+}
+
+// Your data model
+
+model WorkoutFile {
+  id        Int        @id @default(autoincrement())
+  title     String
+  date      DateTime   @default(now())
+  exercises Exercise[]
+}
+
+model Exercise {
+  id             Int          @id @default(autoincrement())
+  name           String
+  targetSetCount Int
+  targetRepCount Int
+  // TODO add sets
+  WorkoutFile    WorkoutFile? @relation(fields: [workoutFileId], references: [id], onDelete: Cascade)
+  workoutFileId  Int?
+}
