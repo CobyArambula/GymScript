@@ -9,6 +9,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -42,12 +43,19 @@ export default function RootLayout() {
 
   return (
     <ActionSheetProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="workout-file" options={{ headerShown: false }} />
-        </Stack>
-      </ThemeProvider>
+      <GestureHandlerRootView>
+        <ThemeProvider
+          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+        >
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="workout-file"
+              options={{ headerShown: false }}
+            />
+          </Stack>
+        </ThemeProvider>
+      </GestureHandlerRootView>
     </ActionSheetProvider>
   );
 }
