@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { WorkoutFile } from "@prisma/client/react-native";
 import WorkoutFileListItem from "./WorkoutFileListItem";
 
-export default function WorkoutFileList() {
+export default function WorkoutFileList({ highestWorkoutId }: any) {
   const [sortedFiles, setSortedFiles] = useState<WorkoutFile[]>([]);
 
   const files = extendedClient.workoutFile.useFindMany({
@@ -36,6 +36,7 @@ export default function WorkoutFileList() {
           push
           href={{
             pathname: "/workout-file",
+            params: { highestWorkoutId: highestWorkoutId?.id },
           }}
         >
           <ActionButton
@@ -56,7 +57,12 @@ export default function WorkoutFileList() {
         <FlatList
           data={sortedFiles}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <WorkoutFileListItem item={item} />}
+          renderItem={({ item }) => (
+            <WorkoutFileListItem
+              item={item}
+              highestWorkoutId={highestWorkoutId}
+            />
+          )}
         />
         <ThemedText style={{ textAlign: "center" }}>
           Total workouts: {files.length}

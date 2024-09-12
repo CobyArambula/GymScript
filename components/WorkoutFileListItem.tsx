@@ -15,7 +15,7 @@ import { Colors } from "@/constants/Colors";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { extendedClient } from "@/myDbModule";
 
-export default function WorkoutFileListItem({ item }: any) {
+export default function WorkoutFileListItem({ item, highestWorkoutId }: any) {
   const theme = useColorScheme() ?? "light";
   const iconColor = theme === "light" ? Colors.light.icon : Colors.dark.icon;
   "light" ? Colors.light.icon : Colors.dark.icon;
@@ -26,7 +26,6 @@ export default function WorkoutFileListItem({ item }: any) {
 
   const { showActionSheetWithOptions } = useActionSheet();
   const deleteWorkoutFile = (id: number) => {
-    console.log("test");
     const options = ["Delete", "Cancel"];
     const destructiveButtonIndex = 0;
     const cancelButtonIndex = 1;
@@ -57,7 +56,10 @@ export default function WorkoutFileListItem({ item }: any) {
       asChild
       href={{
         pathname: "/workout-file",
-        params: { viewingFile: JSON.stringify(item) },
+        params: {
+          viewingFile: JSON.stringify(item),
+          highestWorkoutId: highestWorkoutId,
+        },
       }}
     >
       <TouchableOpacity>

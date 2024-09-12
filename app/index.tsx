@@ -4,9 +4,21 @@ import { ThemedView } from "@/components/ThemedView";
 import WorkoutFileList from "@/components/WorkoutFileList";
 import { extendedClient } from "@/myDbModule";
 import { Link } from "expo-router";
+import { useEffect, useState } from "react";
 import { Button, SafeAreaView, Text, View, StyleSheet } from "react-native";
 
 export default function Index() {
+  const [highestWorkoutId, setHighestWorkoutId] = useState(1);
+
+  const retrievedHighestWorkoutId = extendedClient.workoutFile.useFindFirst({
+    orderBy: { id: "desc" },
+    select: { id: true },
+  });
+
+  useEffect(() => {
+    setHighestWorkoutId(retrievedHighestWorkoutId?.id ?? 1);
+  }, [retrievedHighestWorkoutId]);
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.container}>
@@ -27,6 +39,7 @@ export default function Index() {
               push
               href={{
                 pathname: "/workout-file",
+                params: { highestWorkoutId: highestWorkoutId },
               }}
             >
               <ActionButton
@@ -38,7 +51,7 @@ export default function Index() {
             </Link>
           </ThemedView>
         </ThemedView>
-        <WorkoutFileList />
+        <WorkoutFileList highestWorkoutId={highestWorkoutId} />
       </SafeAreaView>
     </ThemedView>
   );
