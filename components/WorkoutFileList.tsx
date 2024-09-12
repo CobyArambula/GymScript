@@ -36,7 +36,7 @@ export default function WorkoutFileList({ highestWorkoutId }: any) {
           push
           href={{
             pathname: "/workout-file",
-            params: { highestWorkoutId: highestWorkoutId?.id },
+            params: { highestWorkoutId: highestWorkoutId },
           }}
         >
           <ActionButton

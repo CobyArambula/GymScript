@@ -21,8 +21,6 @@ export default function ExerciseList({ viewingFile, highestWorkoutId }: any) {
     setExercises(loadedExercises);
   }, []);
 
-  console.log(exercises);
-
   return (
     <ThemedView>
       <FlatList
@@ -45,11 +43,13 @@ export default function ExerciseList({ viewingFile, highestWorkoutId }: any) {
                     id: 1,
                     targetSetCount: 0,
                     targetRepCount: 0,
-                    // If workoutFileId is -1, this is a new exercise, as viewingFile
-                    // doesn't have an Id yet. So we'll need to somehow retrieve or predict the
-                    // viewingFile.id that's created after file creation so that we can
-                    // set the workoutFileId of the ExerciseListItem to the correct value
-                    workoutFileId: Number(highestWorkoutId) + 1,
+                    // if highestWorkoutId == 1, This is the first exercise, so keep workoutFileId at 1
+                    // else, need to set this to 1 more than the highest workoutId. When the workoutFile is created,
+                    // its Id will always be highestWorkoutId + 1
+                    workoutFileId:
+                      highestWorkoutId == 1
+                        ? highestWorkoutId
+                        : Number(highestWorkoutId) + 1,
                   },
                 ]
             : exercises

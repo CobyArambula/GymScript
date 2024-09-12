@@ -4,11 +4,10 @@ import { ThemedText } from "./ThemedText";
 import { TextInput, StyleSheet } from "react-native";
 import { extendedClient } from "@/myDbModule";
 export default function ExerciseListItem({ item, viewingFile }: any) {
-  console.log("test");
   const [name, setName] = useState(item.name);
   const [targetSetCount, setTargetSetCount] = useState(item.targetSetCount);
   const [targetRepCount, setTargetRepCount] = useState(item.targetRepCount);
-
+  console.log("item.workoutFileId", item.workoutFileId);
   /**
    * Out of all of the user id's, find the Id that is the HIGHEST number.
    * This is because if a user is deleted, the Id will not decrement;
@@ -25,33 +24,33 @@ export default function ExerciseListItem({ item, viewingFile }: any) {
     workoutFileId: item.workoutFileId,
   };
 
-  // useEffect(() => {
-  //   if (item.workoutFileId === -1) {
-  //     // New exercise
-  //     extendedClient.exercise.create({
-  //       data: {
-  //         name: thisExercise.name,
-  //         targetSetCount: thisExercise.targetSetCount,
-  //         targetRepCount: thisExercise.targetRepCount,
-  //         workoutFileId: thisExercise.workoutFileId,
-  //       },
-  //     });
-  //     console.log("create exercise");
-  //   } else if (item.workoutFileId > 0) {
-  //     // Existing exercise
-  //     extendedClient.exercise.update({
-  //       where: { id: item.id },
-  //       data: {
-  //         name: thisExercise.name,
-  //         targetSetCount: thisExercise.targetSetCount,
-  //         targetRepCount: thisExercise.targetRepCount,
-  //         workoutFileId: thisExercise.workoutFileId,
-  //       },
-  //     });
-  //     console.log("update exercise");
-  //   }
-  //   // Reset Data
-  // }, [thisExercise]);
+  useEffect(() => {
+    if (item.workoutFileId === -1) {
+      // New exercise
+      extendedClient.exercise.create({
+        data: {
+          name: thisExercise.name,
+          targetSetCount: thisExercise.targetSetCount,
+          targetRepCount: thisExercise.targetRepCount,
+          workoutFileId: thisExercise.workoutFileId,
+        },
+      });
+      console.log("create exercise");
+    } else if (item.workoutFileId > 0) {
+      // Existing exercise
+      extendedClient.exercise.update({
+        where: { id: item.id },
+        data: {
+          name: thisExercise.name,
+          targetSetCount: thisExercise.targetSetCount,
+          targetRepCount: thisExercise.targetRepCount,
+          workoutFileId: thisExercise.workoutFileId,
+        },
+      });
+      console.log("update exercise");
+    }
+    // Reset Data
+  }, [thisExercise]);
 
   return (
     <ThemedView>
