@@ -19,6 +19,7 @@ export default function WorkoutFileScreen() {
   const textColor = Colors[theme!].text as any;
   const router = useRouter();
   const routeParams = useLocalSearchParams<{
+    highestWorkoutId: any;
     viewingFile?: string;
   }>();
   const viewingFile: WorkoutFile = routeParams.viewingFile
@@ -40,8 +41,6 @@ export default function WorkoutFileScreen() {
       title: title,
       date: date,
     };
-
-    console.log("data", data);
 
     if (viewingFile) {
       extendedClient.workoutFile.update({
@@ -122,7 +121,10 @@ export default function WorkoutFileScreen() {
             setDate(date!);
           }}
         />
-        <ExerciseList viewingFile={viewingFile} />
+        <ExerciseList
+          viewingFile={viewingFile}
+          highestWorkoutId={routeParams.highestWorkoutId}
+        />
       </SafeAreaView>
     </ThemedView>
   );
