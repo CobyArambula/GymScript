@@ -22,7 +22,7 @@ export default function Index() {
   async function createWorkoutFile() {
     const newWorkoutFile = await extendedClient.workoutFile.create({
       data: {
-        id: highestWorkoutId + 1,
+        id: highestWorkoutId,
         title: "",
         date: new Date(),
       },

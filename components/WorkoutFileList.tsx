@@ -1,4 +1,4 @@
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import ActionButton from "./ActionButton";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
@@ -14,6 +14,30 @@ export default function WorkoutFileList({ highestWorkoutId }: any) {
   const files = extendedClient.workoutFile.useFindMany({
     orderBy: { date: "desc" },
   });
+
+  async function createWorkoutFile() {
+    const newWorkoutFile = await extendedClient.workoutFile.create({
+      data: {
+        id: highestWorkoutId,
+        title: "",
+        date: new Date(),
+      },
+    });
+    return newWorkoutFile;
+  }
+
+  // Handle the "Create" button press
+  async function handleCreateWorkoutFile() {
+    const newWorkoutFile = await createWorkoutFile();
+    if (newWorkoutFile) {
+      router.push({
+        pathname: "/workout-file",
+        params: {
+          viewingFile: JSON.stringify(newWorkoutFile),
+        },
+      });
+    }
+  }
 
   useEffect(() => {
     setSortedFiles(files);
@@ -31,21 +55,13 @@ export default function WorkoutFileList({ highestWorkoutId }: any) {
         }}
       >
         <ThemedText style={{ textAlign: "center" }}>Press</ThemedText>
-        <Link
-          asChild
-          push
-          href={{
-            pathname: "/workout-file",
-            params: { highestWorkoutId: highestWorkoutId },
-          }}
-        >
-          <ActionButton
-            containerStyle={styles.createButton}
-            iconName="add"
-            title="Create"
-            onPress={() => {}}
-          />
-        </Link>
+        <ActionButton
+          containerStyle={styles.createButton}
+          iconName="add"
+          title="Create"
+          onPress={handleCreateWorkoutFile}
+        />
+
         <ThemedText style={{ textAlign: "center" }}>
           to start your first workout.
         </ThemedText>
