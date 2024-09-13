@@ -13,46 +13,36 @@ export default function ExerciseListItem({ item, viewingFile }: any) {
   // and targetRepCount state variables are not being updated, even though the
   // item prop is changing. This useEffect hook is used to update the state
   // variables whenever the item prop changes.
-  useEffect(() => {
-    setName(item.name);
-    setTargetSetCount(item.targetSetCount);
-    setTargetRepCount(item.targetRepCount);
-  }, [item]);
+  // useEffect(() => {
+  //   setName(item.name);
+  //   setTargetSetCount(item.targetSetCount);
+  //   setTargetRepCount(item.targetRepCount);
+  // }, [item]);
 
-  console.log(
-    "viewingFile.id (in exerciseListItem)",
-    viewingFile?.id ? viewingFile?.id : 1
-  );
-  function handleSaveExercise() {
+  async function handleSaveExercise() {
     if (!name) {
       return;
     }
-
-    console.log("item.id", item.id);
     const data = {
       name: name,
       targetSetCount: Number(targetSetCount),
       targetRepCount: Number(targetRepCount),
-      workoutFileId: viewingFile?.id ? viewingFile?.id : 1, // not sure if this works yet
+      workoutFileId: viewingFile?.id,
     };
 
     console.log("data", data);
 
-    try {
-      extendedClient.exercise.upsert({
-        where: {
-          id: item.id,
-          // id_workoutFileId: {
-          //   id: item.id,
-          //   workoutFileId: viewingFile?.id ? viewingFile?.id : 1,
-          // },
-        },
-        update: data,
-        create: { id: item.id, ...data },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    // try {
+    //   await extendedClient.exercise.upsert({
+    //     where: {
+    //       id: item.id,
+    //     },
+    //     update: data,
+    //     create: data,
+    //   });
+    // } catch (e) {
+    //   console.log(e);
+    // }
   }
 
   useEffect(() => {

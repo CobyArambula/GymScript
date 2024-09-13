@@ -19,6 +19,8 @@ export default function ExerciseList({ viewingFile, highestWorkoutId }: any) {
   ]);
   // On load, if we're viewing a workout, load all exercises for that workout
   // If not ViewingFile, no need to load exercises
+  console.log("viewingFile.id in ExerciseList:", viewingFile?.id);
+
   useEffect(() => {
     async function fetchExercises() {
       if (viewingFile) {
@@ -39,9 +41,7 @@ export default function ExerciseList({ viewingFile, highestWorkoutId }: any) {
   }, [viewingFile]);
   return (
     <ThemedView>
-      {/* <Button title="create exercise" onPress={createExerciseTest} /> */}
       <FlatList
-        // If viewingFile,
         data={exercises}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
