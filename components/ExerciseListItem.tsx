@@ -3,87 +3,61 @@ import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
 import { TextInput, StyleSheet } from "react-native";
 import { extendedClient } from "@/myDbModule";
-export default function ExerciseListItem({ item, highestWorkoutId }: any) {
-  console.log("item.workoutFileId", item.workoutFileId);
+export default function ExerciseListItem({ item, viewingFile }: any) {
   const [name, setName] = useState<string>(item.name);
-  // This useEffect hook is necessary because the component is being re-rendered
-  // when the Exercise is updated, but the `item` prop isn't being updated.
-  // This means that the `name` state variable is not being updated, even though
-  // the `item` prop is changing.
-
   const [targetSetCount, setTargetSetCount] = useState(item.targetSetCount);
-
   const [targetRepCount, setTargetRepCount] = useState(item.targetRepCount);
 
   // The component is being re-rendered when the Exercise is updated, but the
-  // `item` prop isn't being updated. This means that the `name`, `targetSetCount`,
-  // and `targetRepCount` state variables are not being updated, even though the
-  // `item` prop is changing. This useEffect hook is used to update the state
-  // variables whenever the `item` prop changes.
+  // item prop isn't being updated. This means that the name, targetSetCount,
+  // and targetRepCount state variables are not being updated, even though the
+  // item prop is changing. This useEffect hook is used to update the state
+  // variables whenever the item prop changes.
   useEffect(() => {
     setName(item.name);
     setTargetSetCount(item.targetSetCount);
     setTargetRepCount(item.targetRepCount);
   }, [item]);
 
-  const [thisExercise, setThisExercise] = useState<{
-    name: string;
-    targetSetCount: number;
-    targetRepCount: number;
-    workoutFileId: number;
-  }>({
-    name: name,
-    targetSetCount: targetSetCount,
-    targetRepCount: targetRepCount,
-    // If file is a new file, workoutFileId will be -1
-    //New File's Id will be highestWorkoutId + 1
-    workoutFileId: item.workoutFileId,
-  });
-  const [newExercise, setNewExercise] = useState<boolean>(
-    item.workoutFileId == 1
-      ? true
-      : item.workoutFileId == Number(highestWorkoutId) + 1
-      ? true
-      : false
+  console.log(
+    "viewingFile.id (in exerciseListItem)",
+    viewingFile?.id ? viewingFile?.id : 1
   );
+  function handleSaveExercise() {
+    if (!name) {
+      return;
+    }
 
-  /**
-   * Out of all of the user id's, find the Id that is the HIGHEST number.
-   * This is because if a user is deleted, the Id will not decrement;
-   * it will continue to increment. As a result, any newly created users will
-   * have an Id greater than the number of workouts.
-   */
-
-  useEffect(() => {
-    setThisExercise({
-      name: String(name),
+    console.log("item.id", item.id);
+    const data = {
+      name: name,
       targetSetCount: Number(targetSetCount),
       targetRepCount: Number(targetRepCount),
-      workoutFileId: Number(item.workoutFileId),
-    });
-  }, [name, targetSetCount, targetRepCount]);
+      workoutFileId: viewingFile?.id ? viewingFile?.id : 1, // not sure if this works yet
+    };
 
-  useEffect(() => {
+    console.log("data", data);
+
     try {
-      if (newExercise) {
-        // New exercise
-        extendedClient.exercise.create({
-          data: thisExercise,
-        });
-        console.log("create exercise");
-        setNewExercise(false);
-      } else {
-        // Existing exercise
-        extendedClient.exercise.update({
-          where: { id: item.id },
-          data: thisExercise,
-        });
-        console.log("update exercise");
-      }
+      extendedClient.exercise.upsert({
+        where: {
+          id: item.id,
+          // id_workoutFileId: {
+          //   id: item.id,
+          //   workoutFileId: viewingFile?.id ? viewingFile?.id : 1,
+          // },
+        },
+        update: data,
+        create: { id: item.id, ...data },
+      });
     } catch (e) {
       console.log(e);
     }
-  }, [thisExercise]);
+  }
+
+  useEffect(() => {
+    handleSaveExercise();
+  }, [name, targetSetCount, targetRepCount, item]);
 
   return (
     <ThemedView>

@@ -18,11 +18,13 @@ model WorkoutFile {
 }
 
 model Exercise {
-  id             Int          @id @default(autoincrement())
+  id             Int          @id
   name           String
   targetSetCount Int
   targetRepCount Int
   // TODO add sets
   WorkoutFile    WorkoutFile? @relation(fields: [workoutFileId], references: [id], onDelete: Cascade)
   workoutFileId  Int?
+
+  @@unique([id, workoutFileId]) // This creates a unique constraint on both id and workoutFileId
 }

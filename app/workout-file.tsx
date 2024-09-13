@@ -13,8 +13,10 @@ import {
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import ExerciseList from "@/components/ExerciseList";
+import { Exercise } from "@prisma/client";
 
 export default function WorkoutFileScreen() {
+  console.log("*** ENTER WORKOUT FILE SCREEN ***");
   const theme = useColorScheme();
   const textColor = Colors[theme!].text as any;
   const router = useRouter();
@@ -61,7 +63,15 @@ export default function WorkoutFileScreen() {
     if (router.canDismiss()) {
       router.dismissAll();
     }
-    router.replace("/");
+  }
+
+  function deleteWorkoutFile() {
+    extendedClient.workoutFile.delete({
+      where: {
+        id: viewingFile?.id, // If we create a workoutFile on the press of create in index, then there
+        // SHOULD be a viewingFile
+      },
+    });
   }
 
   return (
@@ -87,11 +97,11 @@ export default function WorkoutFileScreen() {
             <ActionButton
               iconName="close"
               onPress={() => {
+                deleteWorkoutFile();
                 router.setParams({ viewingFile: "" });
                 if (router.canDismiss()) {
                   router.dismissAll();
                 }
-                router.replace("/");
               }}
               containerStyle={{
                 alignSelf: "flex-end",

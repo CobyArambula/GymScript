@@ -19,6 +19,17 @@ export default function Index() {
     setHighestWorkoutId(retrievedHighestWorkoutId?.id ?? 1);
   }, [retrievedHighestWorkoutId]);
 
+  function createWorkoutFile() {
+    extendedClient.workoutFile.create({
+      data: {
+        id: highestWorkoutId + 1,
+        title: "",
+        date: new Date(),
+      },
+    });
+    console.log("created");
+  }
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.container}>
@@ -37,6 +48,7 @@ export default function Index() {
             <Link
               asChild
               push
+              onPress={createWorkoutFile}
               href={{
                 pathname: "/workout-file",
                 params: { highestWorkoutId: highestWorkoutId },

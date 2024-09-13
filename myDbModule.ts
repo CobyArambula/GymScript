@@ -1,7 +1,9 @@
 import { PrismaClient } from "@prisma/client/react-native";
 import { reactiveHooksExtension } from "@prisma/react-native";
 
-export const baseClient = new PrismaClient();
+export const baseClient = new PrismaClient({
+  log: ["error", "warn"],
+});
 
 export const extendedClient = baseClient.$extends(reactiveHooksExtension());
 
