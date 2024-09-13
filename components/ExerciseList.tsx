@@ -14,9 +14,9 @@ export default function ExerciseList({ viewingFile, highestWorkoutId }: any) {
       targetSetCount: 0,
       targetRepCount: 0,
       workoutFileId: viewingFile?.id,
-      // workoutFileId: highestWorkoutId == 1 ? 1 : highestWorkoutId + 1, <- might now need this if viewingFile.id works
     },
   ]);
+
   // On load, if we're viewing a workout, load all exercises for that workout
   // If not ViewingFile, no need to load exercises
   console.log("viewingFile.id in ExerciseList:", viewingFile?.id);

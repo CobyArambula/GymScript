@@ -7,22 +7,24 @@ export default function ExerciseListItem({ item, viewingFile }: any) {
   const [name, setName] = useState<string>(item.name);
   const [targetSetCount, setTargetSetCount] = useState(item.targetSetCount);
   const [targetRepCount, setTargetRepCount] = useState(item.targetRepCount);
+  // const [isExerciseCreated, setIsExerciseCreated] = useState<boolean>(true);
 
   // The component is being re-rendered when the Exercise is updated, but the
   // item prop isn't being updated. This means that the name, targetSetCount,
   // and targetRepCount state variables are not being updated, even though the
   // item prop is changing. This useEffect hook is used to update the state
   // variables whenever the item prop changes.
-  // useEffect(() => {
-  //   setName(item.name);
-  //   setTargetSetCount(item.targetSetCount);
-  //   setTargetRepCount(item.targetRepCount);
-  // }, [item]);
+  useEffect(() => {
+    setName(item.name);
+    setTargetSetCount(item.targetSetCount);
+    setTargetRepCount(item.targetRepCount);
+  }, [item]);
 
   async function handleSaveExercise() {
     if (!name) {
       return;
     }
+
     const data = {
       name: name,
       targetSetCount: Number(targetSetCount),
@@ -32,22 +34,38 @@ export default function ExerciseListItem({ item, viewingFile }: any) {
 
     console.log("data", data);
 
-    // try {
-    //   await extendedClient.exercise.upsert({
-    //     where: {
-    //       id: item.id,
-    //     },
-    //     update: data,
-    //     create: data,
-    //   });
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    try {
+      // Check if the record exists
+      const existingExercise = await extendedClient.exercise.findUnique({
+        where: {
+          id: item.id,
+          workoutFileId: viewingFile?.id,
+        },
+      });
+
+      if (existingExercise) {
+        console.log("Update function is being run");
+        await extendedClient.exercise.update({
+          where: {
+            id: item.id,
+          },
+          data: data,
+        });
+      } else {
+        console.log("Create function is being run");
+        const createdExercise = await extendedClient.exercise.create({
+          data: data,
+        });
+        item.id = createdExercise.id;
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   useEffect(() => {
     handleSaveExercise();
-  }, [name, targetSetCount, targetRepCount, item]);
+  }, [name, targetSetCount, targetRepCount]);
 
   return (
     <ThemedView>
