@@ -22,7 +22,16 @@ model Exercise {
   name           String
   targetSetCount Int
   targetRepCount Int
-  // TODO add sets
   WorkoutFile    WorkoutFile? @relation(fields: [workoutFileId], references: [id], onDelete: Cascade)
   workoutFileId  Int?
+  sets           Set[]
+}
+
+model Set {
+  id            Int       @id @default(autoincrement())
+  completedReps Int
+  weight        Int
+  notes         String
+  Exercise      Exercise? @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  exerciseId    Int?
 }
