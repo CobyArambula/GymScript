@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
-import { TextInput, StyleSheet } from "react-native";
+import { TextInput, StyleSheet, useColorScheme } from "react-native";
 import { extendedClient } from "@/myDbModule";
-export default function ExerciseListItem({ item, viewingFile }: any) {
+import SetList from "./SetList";
+import { Colors } from "@/constants/Colors";
+import ActionButton from "./ActionButton";
+export default function ExerciseListItem({
+  item,
+  viewingFile,
+  handleCreateExerciseButton,
+  displayCreateButton,
+}: any) {
+  const theme = useColorScheme();
+  const textColor = Colors[theme!].text as any;
   const [name, setName] = useState<string>(item.name);
   const [targetSetCount, setTargetSetCount] = useState(item.targetSetCount);
   const [targetRepCount, setTargetRepCount] = useState(item.targetRepCount);
-  // const [isExerciseCreated, setIsExerciseCreated] = useState<boolean>(true);
 
   // The component is being re-rendered when the Exercise is updated, but the
   // item prop isn't being updated. This means that the name, targetSetCount,
@@ -32,7 +41,7 @@ export default function ExerciseListItem({ item, viewingFile }: any) {
       workoutFileId: viewingFile?.id,
     };
 
-    console.log("data", data);
+    // console.log("data", data);
 
     try {
       // Check if the record exists
@@ -44,7 +53,7 @@ export default function ExerciseListItem({ item, viewingFile }: any) {
       });
 
       if (existingExercise) {
-        console.log("Update function is being run");
+        // console.log("Update function is being run");
         await extendedClient.exercise.update({
           where: {
             id: item.id,
@@ -52,7 +61,7 @@ export default function ExerciseListItem({ item, viewingFile }: any) {
           data: data,
         });
       } else {
-        console.log("Create function is being run");
+        // console.log("Create function is being run");
         const createdExercise = await extendedClient.exercise.create({
           data: data,
         });
@@ -70,7 +79,7 @@ export default function ExerciseListItem({ item, viewingFile }: any) {
   return (
     <ThemedView>
       <TextInput // TITLE
-        style={styles.title}
+        style={[styles.title, { color: textColor }]}
         value={name}
         multiline
         placeholder="Exercise Name"
@@ -82,7 +91,7 @@ export default function ExerciseListItem({ item, viewingFile }: any) {
           <TextInput // TARGETSETCOUNT
             value={String(targetSetCount)}
             placeholder="#"
-            style={styles.targetSetReps}
+            style={[styles.targetSetReps, { color: textColor }]}
             onChangeText={setTargetSetCount}
           />
           <ThemedText style={[styles.targetSetReps, { marginLeft: 5 }]}>
@@ -91,10 +100,24 @@ export default function ExerciseListItem({ item, viewingFile }: any) {
           <TextInput // TARGETREPCOUNT
             value={String(targetRepCount)}
             placeholder="#"
-            style={styles.targetSetReps}
+            style={[styles.targetSetReps, { color: textColor }]}
             onChangeText={setTargetRepCount}
           />
         </ThemedView>
+      )}
+      {targetSetCount > 0 && (
+        <SetList
+          exerciseId={item.id}
+          targetSetCount={targetSetCount}
+          targetRepCount={targetRepCount}
+        />
+      )}
+      {displayCreateButton && targetSetCount > 0 && (
+        <ActionButton
+          onPress={handleCreateExerciseButton}
+          iconName="add"
+          containerStyle={styles.addExerciseButton}
+        />
       )}
     </ThemedView>
   );
@@ -125,5 +148,10 @@ const styles = StyleSheet.create({
   },
   targetSetReps: {
     fontSize: 17,
+  },
+  addExerciseButton: {
+    marginTop: 5,
+    alignSelf: "center",
+    borderRadius: 8,
   },
 });
