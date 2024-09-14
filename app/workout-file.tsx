@@ -16,7 +16,6 @@ import ExerciseList from "@/components/ExerciseList";
 import { Exercise } from "@prisma/client";
 
 export default function WorkoutFileScreen() {
-  console.log("*** ENTER WORKOUT FILE SCREEN ***");
   const theme = useColorScheme();
   const textColor = Colors[theme!].text as any;
   const router = useRouter();
@@ -76,7 +75,7 @@ export default function WorkoutFileScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1 }}>
         <Link
           asChild
           href={{
