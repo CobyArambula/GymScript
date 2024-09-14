@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+# GymScript 🏋️
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+GymScript is a workout logging app built with Expo designed to streamline the process of tracking your gym workouts. 
 
-## Get started
+It is designed for users who are used to logging workouts in basic notes apps like Apple Notes or Notion and want more powerful, intuitive features without unnecessary complexity.
 
-1. Install dependencies
+---
+## Demo
 
+Check out a brief video demonstrating the current functionality of GymScript, focused on workout file management. The app allows you to easily create, update, and organize your workout files in a clean, intuitive interface designed for iOS.
+
+Features in this demo:
+- Create new workout files with a single tap
+- Organize and manage workout data
+- Seamless navigation between different workout files
+[Insert demo video here]
+---
+
+## Getting Started
+
+### Prerequisites
+
+Make sure you have the following tools installed on your system:
+
+- [Node.js](https://nodejs.org/) (version 14.x or higher)
+- [Yarn](https://yarnpkg.com/getting-started/install) (version 1.x)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/) (for running the app locally)
+- [Xcode](https://developer.apple.com/xcode/) (for running the app on a physical device or simulator)
+
+### Installation
+
+Follow these steps to set up the project on your local machine:
+
+1. **Clone the repository:**
    ```bash
-   npm install
+   git clone https://github.com/your-username/gymscript.git
+   cd gymscript
    ```
 
-2. Start the app
-
+2. **Install dependencies:**
+   Use Yarn to install the project’s dependencies:
    ```bash
-    npx expo start
+   yarn install
    ```
 
-In the output, you'll find options to open the app in a
+3. **Database Setup:**
+   After installing dependencies, you need to set up Prisma and migrate the database schema. Run the following commands:
+    Generate the Prisma Client:
+   ```bash
+   npx prisma generate
+   ```
+   Run the database migrations:
+   ```bash
+    npx prisma migrate dev
+   ```
+This ensures your database is set up correctly and that Prisma can generate the required client for database interaction.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Running the App
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Once everything is set up, you can run the app using yarn.
 
-## Get a fresh project
+- **Start the app:**
+   ```bash
+   yarn start
+   ```
+   This will open up the Expo Developer Tools, allowing you to run the app on a simulator, physical device, or web browser.
 
-When you're ready, run:
+- **Run on iOS:**
+   ```bash
+   yarn ios
+   ```
 
+### Testing
+
+To run the unit tests:
 ```bash
-npm run reset-project
+yarn test
 ```
+---
+### License
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is licensed under the MIT License.
