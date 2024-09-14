@@ -29,7 +29,7 @@ export default function ExerciseList({ viewingFile, highestWorkoutId }: any) {
           const retrievedExercises = await extendedClient.exercise.findMany({
             where: { workoutFileId: viewingFile?.id },
           });
-          console.log("retrievedExercises", retrievedExercises);
+          // console.log("retrievedExercises", retrievedExercises);
           if (retrievedExercises.length > 0) {
             setExercises(retrievedExercises);
           }

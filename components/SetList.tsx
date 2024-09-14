@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, useColorScheme } from "react-native";
 import { ThemedView } from "./ThemedView";
 import { ThemedText } from "./ThemedText";
@@ -6,6 +6,7 @@ import { Colors } from "@/constants/Colors";
 import { FlatList } from "react-native-gesture-handler";
 import SetListItem from "../components/SetListItem";
 import { Set } from "@prisma/client";
+import { extendedClient } from "@/myDbModule";
 
 export default function SetList({
   exerciseId,
@@ -28,17 +29,35 @@ export default function SetList({
     }))
   );
 
+  useEffect(() => {
+    async function fetchSets() {
+      try {
+        const retrievedSets = await extendedClient.set.findMany({
+          where: { exerciseId: exerciseId },
+        });
+        if (retrievedSets.length > 0) {
+          setSets(retrievedSets);
+          console.log("sets", sets);
+        }
+      } catch (error) {
+        console.log("Error fetching sets:", error);
+      }
+    }
+    fetchSets();
+  }, []);
+
   return (
     <ThemedView style={[styles.container, { backgroundColor: itemColor }]}>
       <FlatList
         data={sets}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <SetListItem
             item={item}
             targetSetCount={targetSetCount}
             targetRepCount={targetRepCount}
             setSets={setSets}
+            index={index}
           />
         )}
       />
