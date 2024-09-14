@@ -76,52 +76,48 @@ export default function WorkoutFileScreen() {
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={{ flex: 1 }}>
-        <Link
-          asChild
-          href={{
-            pathname: "/",
+        <ThemedView
+          style={{
+            marginTop: 15,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          {title ? (
-            <ActionButton
-              title="Done"
-              onPress={handleSaveWorkoutFile}
-              containerStyle={{
-                alignSelf: "flex-end",
-                marginTop: 20,
-                marginBottom: 5,
-              }}
-            />
-          ) : (
-            <ActionButton
-              iconName="close"
-              onPress={() => {
-                deleteWorkoutFile();
-                router.setParams({ viewingFile: "" });
-                if (router.canDismiss()) {
-                  router.dismissAll();
-                }
-              }}
-              containerStyle={{
-                alignSelf: "flex-end",
-                marginTop: 20,
-                marginBottom: 5,
-              }}
-            />
-          )}
-        </Link>
-        <TextInput
-          multiline
-          style={[
-            styles.title,
-            {
-              color: textColor,
-            },
-          ]}
-          placeholder="Untitled Workout"
-          value={title}
-          onChangeText={setTitle}
-        />
+          <TextInput
+            multiline
+            style={[
+              styles.title,
+              {
+                color: textColor,
+              },
+            ]}
+            placeholder="Untitled Workout"
+            value={title}
+            onChangeText={setTitle}
+          />
+          <Link
+            asChild
+            href={{
+              pathname: "/",
+            }}
+          >
+            {title ? (
+              <ActionButton title="Done" onPress={handleSaveWorkoutFile} />
+            ) : (
+              <ActionButton
+                iconName="close"
+                onPress={() => {
+                  deleteWorkoutFile();
+                  router.setParams({ viewingFile: "" });
+                  if (router.canDismiss()) {
+                    router.dismissAll();
+                  }
+                }}
+              />
+            )}
+          </Link>
+        </ThemedView>
         <DateTimePicker
           value={date}
           mode="datetime"
