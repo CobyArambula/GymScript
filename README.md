@@ -13,7 +13,9 @@ Features in this demo:
 - Create new workout files with a single tap
 - Organize and manage workout data
 - Seamless navigation between different workout files
-[Insert demo video here]
+
+https://github.com/user-attachments/assets/8ad98bc1-48c8-4f12-beec-b5e5d6c9ce22
+
 ---
 
 ## Getting Started
